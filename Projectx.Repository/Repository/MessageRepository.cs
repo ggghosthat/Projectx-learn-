@@ -2,68 +2,21 @@
 using Projectx.Entity.Models;
 
 using Npgsql;
-using System.Linq.Expressions;
-using System.Transactions;
 
 namespace Projectx.Repository;
-public class MessageRepository : IRepository<Message>
+
+public class MessageRepository : IMessageRepository<Message>
 {
     private static string _connectionString;
     private static NpgsqlConnection _psqlConnection;
 
     public MessageRepository()
-    {}
-
-    public async Task Seed(string connectionString)
-    {
-        _connectionString = connectionString;
-
-        string database_create = @"CREATE DATABASE projectx;";
-
-        string client_table_create = @"CREATE TABLE IF NOT EXISTS clients(
-            ID SERIAL PRIMARY KEY,
-            Name VARCHAR(160) );";
-
-        string message_table_create = @"CREATE TABLE IF NOT EXISTS messages(
-            ID SERIAL PRIMARY KEY,
-            MessageId UUID,
-            ClientId INTEGER,
-            Created TIMESTAMP,
-            Content VARCHAR(128) );";
-
-        using (var dataSource = NpgsqlDataSource.Create(_connectionString))
-        using (var connection = await dataSource.OpenConnectionAsync())
-        {
-
-            using var checkIfExistsCommand = new NpgsqlCommand($"SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'projectx'", connection);
-            var result = checkIfExistsCommand.ExecuteScalar();
-
-            if (result == null)
-            {
-                using var command = new NpgsqlCommand($"CREATE DATABASE projectx;", connection);
-                command.ExecuteNonQuery();
-            }
-
-            _connectionString += "Database=projectx;";
-        }
-
-        using (var dataSource = NpgsqlDataSource.Create(_connectionString))
-        using (var connection = await dataSource.OpenConnectionAsync())
-        {
-            var client_table_cmd = new NpgsqlCommand(client_table_create, connection);
-            client_table_cmd.ExecuteNonQuery();
-
-            var message_table_cmd = new NpgsqlCommand(message_table_create, connection);
-            message_table_cmd.ExecuteNonQuery();
-
-            connection.Close();
-        }
-    }
+    { }
 
     public async Task Create(Message entity)
     {
         string message_insert = @"INSERT INTO messages (MessageId, ClientId, Created, Content) VALUES (@messageId, @clientId, @created, @content)";
-        
+
         using (var dataSource = NpgsqlDataSource.Create(_connectionString))
         using (var connection = await dataSource.OpenConnectionAsync())
         using (var transaction = await connection.BeginTransactionAsync())
@@ -102,7 +55,7 @@ public class MessageRepository : IRepository<Message>
     {
         IList<Message> resultMessages = new List<Message>();
         string all_messages = @"SELECT MessageId, ClientId, Created, Content FROM messages;";
-        
+
         using (var dataSource = NpgsqlDataSource.Create(_connectionString))
         using (var connection = await dataSource.OpenConnectionAsync())
         {
