@@ -35,6 +35,18 @@ public class MessageController : ControllerBase
 
         await _repositoryManager.Messages.Create(message);
 
+        _loggerManager.LogInfo($"Message {message.MessageId} was being sent.");
+
         return Ok(message);
+    }
+
+    [HttpGet("LastHistory")]
+    public async Task<IActionResult> GetLastHistory()
+    {
+        DateTime startTime = DateTime.Now.AddMinutes(-10);
+        DateTime endTime = DateTime.Now;
+        var result = await _repositoryManager.Messages.GetByTimeframe(startTime, endTime);
+
+        return Ok(result);
     }
 }
