@@ -10,7 +10,7 @@ namespace RepositoryTest
             string connectionString = "Server=127.0.0.1;Port=5432;User Id=postgres;Password=123;";
             //string connectionString = "Host=127.0.0.1;Port=5432;Integrated Security=true;";
             var messageRepository = new MessageRepository();
-            await messageRepository.Seed(connectionString);
+            //await messageRepository.Seed(connectionString);
             var message = new Message
             {
                 Id = Guid.NewGuid(),

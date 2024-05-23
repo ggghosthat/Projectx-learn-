@@ -10,8 +10,10 @@ public class ClientRepository : IClientRepository<Client>
     private static string _connectionString;
     private static NpgsqlConnection _psqlConnection;
 
-    public ClientRepository()
-    { }
+    public ClientRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
 
     public async Task Create(Client entity)
     {
@@ -41,7 +43,7 @@ public class ClientRepository : IClientRepository<Client>
         using (var transaction = await connection.BeginTransactionAsync())
         {
             var cmd = new NpgsqlCommand(message_delete, connection);
-            cmd.Parameters.AddWithValue("@messageId", entity.Id.ToString());
+            cmd.Parameters.AddWithValue("@clientId", entity.ClientId.ToString());
             cmd.ExecuteNonQuery();
 
             transaction.Commit();

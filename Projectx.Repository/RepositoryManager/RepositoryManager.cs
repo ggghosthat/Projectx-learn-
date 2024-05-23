@@ -1,15 +1,10 @@
 ﻿using Npgsql;
 using Projectx.Contracts.Repository;
 using Projectx.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projectx.Repository.RepositoryManager;
 
-public class RepositoryManager
+public class RepositoryManager : IRepositoryManager
 {
     private static string _connectionString;
 
@@ -28,7 +23,7 @@ public class RepositoryManager
         get
         {
             if (_clientRepository == null)
-                _clientRepository = new ClientRepository();
+                _clientRepository = new ClientRepository(_connectionString);
 
             return _clientRepository;
         }
@@ -39,7 +34,7 @@ public class RepositoryManager
         get
         {
             if (_messageRepository == null)
-                _messageRepository = new MessageRepository();
+                _messageRepository = new MessageRepository(_connectionString);
 
             return _messageRepository;
         }
@@ -52,6 +47,7 @@ public class RepositoryManager
         string client_table_create = @"
             CREATE TABLE IF NOT EXISTS clients(
             ID SERIAL PRIMARY KEY,
+            ClientId INTEGER,
             Name VARCHAR(160) );";
 
         string message_table_create = @"

@@ -8,10 +8,11 @@ namespace Projectx.Repository;
 public class MessageRepository : IMessageRepository<Message>
 {
     private static string _connectionString;
-    private static NpgsqlConnection _psqlConnection;
 
-    public MessageRepository()
-    { }
+    public MessageRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
 
     public async Task Create(Message entity)
     {

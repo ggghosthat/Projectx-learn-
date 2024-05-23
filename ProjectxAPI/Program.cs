@@ -16,7 +16,8 @@ public class Program
         // Add services to the container.
         builder.Services.ConfigureCors();
         builder.Services.ConfigureLoggerService();
-        builder.Services.ConfigureRepositoryManager();
+        builder.Services.ConfigureRepositoryManager(configuration);
+        builder.Services.ConfigureSwagger();
 
 
         builder.Services.AddControllers();

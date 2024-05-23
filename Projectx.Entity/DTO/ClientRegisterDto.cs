@@ -1,7 +1,6 @@
 ﻿namespace Projectx.Entity.DTO;
 
-public class ClientDto
+public class ClientRegisterDto
 {
-    public Guid ClientId { get; set; }
     public string Name { get; set; }
 }
