@@ -23,7 +23,7 @@ public class MessageRepository : IMessageRepository<Message>
         using (var transaction = await connection.BeginTransactionAsync())
         {
             var cmd = new NpgsqlCommand(message_insert, connection);
-            cmd.Parameters.AddWithValue("@messageId", entity.Id);
+            cmd.Parameters.AddWithValue("@messageId", entity.MessageId);
             cmd.Parameters.AddWithValue("@clientId", entity.ClientId);
             cmd.Parameters.AddWithValue("@created", entity.Created);
             cmd.Parameters.AddWithValue("@content", entity.Content);
@@ -44,7 +44,7 @@ public class MessageRepository : IMessageRepository<Message>
         using (var transaction = await connection.BeginTransactionAsync())
         {
             var cmd = new NpgsqlCommand(message_delete, connection);
-            cmd.Parameters.AddWithValue("@messageId", entity.Id.ToString());
+            cmd.Parameters.AddWithValue("@messageId", entity.MessageId.ToString());
             cmd.ExecuteNonQuery();
 
             transaction.Commit();
@@ -67,7 +67,7 @@ public class MessageRepository : IMessageRepository<Message>
             {
                 var message = new Message
                 {
-                    Id = (Guid)reader[0],
+                    MessageId = (Guid)reader[0],
                     ClientId = (int)reader[1],
                     Created = (DateTime)reader[2],
                     Content = (string)reader[3]
@@ -100,7 +100,7 @@ public class MessageRepository : IMessageRepository<Message>
             {
                 var message = new Message
                 {
-                    Id = (Guid)reader[0],
+                    MessageId = (Guid)reader[0],
                     ClientId = (int)reader[1],
                     Created = (DateTime)reader[2],
                     Content = (string)reader[3]

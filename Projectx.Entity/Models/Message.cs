@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Projectx.Entity.Models;
 public class Message
 {
-    [Column("MessageId")]
-    public Guid Id { get; set; }
+    public Guid MessageId { get; set; }
 
     [Required(ErrorMessage = "Client id is a required field.")]
     public int ClientId { get; set; }

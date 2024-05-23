@@ -13,7 +13,7 @@ namespace RepositoryTest
             //await messageRepository.Seed(connectionString);
             var message = new Message
             {
-                Id = Guid.NewGuid(),
+                MessageId = Guid.NewGuid(),
                 ClientId = 1,
                 Created = DateTime.Now,
                 Content = "Hello World"
@@ -23,7 +23,7 @@ namespace RepositoryTest
             var x = await messageRepository.GetAll();
             foreach (var y in x)
             {
-                Console.WriteLine(y.Id);
+                Console.WriteLine(y.MessageId);
                 Console.WriteLine(y.ClientId);
                 Console.WriteLine(y.Created);
                 Console.WriteLine(y.Content);
@@ -34,7 +34,7 @@ namespace RepositoryTest
             var z = await messageRepository.GetByTimeframe(DateTime.Today.AddMinutes(-10), DateTime.Now);
             foreach (var y in z)
             {
-                Console.WriteLine(y.Id);
+                Console.WriteLine(y.MessageId);
                 Console.WriteLine(y.ClientId);
                 Console.WriteLine(y.Created);
                 Console.WriteLine(y.Content);

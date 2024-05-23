@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Projectx.Contracts.Logging;
 using Projectx.Contracts.Repository;
 using Projectx.Entity.DTO;
@@ -8,12 +9,12 @@ namespace ProjectxAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GateController : ControllerBase
+public class MessageController : ControllerBase
 {
     private readonly ILoggerManager _loggerManager;
     private readonly IRepositoryManager _repositoryManager;
 
-    public GateController(
+    public MessageController(
         ILoggerManager loggerManager,
         IRepositoryManager repositoryManager)
     {
@@ -21,20 +22,19 @@ public class GateController : ControllerBase
         _repositoryManager = repositoryManager;
     }
 
-    [HttpPost("RegisterUser")]
-    public async Task<IActionResult> Register([FromBody]ClientRegisterDto clientDto)
+    [HttpPost("SendMessage")]
+    public async Task<IActionResult> Send([FromBody] MessageDto messageDto)
     {
-        var rnd = new Random();
-        var client = new Client
+        var message = new Message
         {
-            ClientId = rnd.Next(0, int.MaxValue),
-            Name = clientDto.Name
+            MessageId = Guid.NewGuid(),
+            ClientId = messageDto.ClientId,
+            Created = DateTime.Now,
+            Content = messageDto.Content
         };
 
-        await _repositoryManager.Clients.Create(client);
+        await _repositoryManager.Messages.Create(message);
 
-        _loggerManager.LogInfo($"Client '{client.Name}' registered.");
-        
-        return Ok(client);
+        return Ok(message);
     }
 }
