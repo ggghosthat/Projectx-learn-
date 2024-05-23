@@ -3,6 +3,7 @@ using Projectx.Contracts.Logging;
 using Projectx.Contracts.Repository;
 using Projectx.Logger;
 using Projectx.Repository.RepositoryManager;
+using ProjectxAPI.Streaming;
 
 namespace ProjectxAPI.DependencyExtenssion;
 public static class DependencyExtenssion
@@ -26,5 +27,18 @@ public static class DependencyExtenssion
             string connectionString = configuration.GetConnectionString("DefaultConnection");
             var repostioryManager = new RepositoryManager(connectionString);
             return repostioryManager;
+        });
+
+    public static void ConfigureStreamer(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddSingleton<IStreamer, Streamer>((s) =>
+        {
+            string[] steramerEndpoint = configuration.GetSection("StreamerEndpoint").Value.Split(':');
+            string streamIp = steramerEndpoint[0];
+            int streamPort = int.Parse(steramerEndpoint[1]);
+
+            var streamer = new Streamer();
+            streamer.Start(streamIp, streamPort);
+
+            return streamer;
         });
 }
