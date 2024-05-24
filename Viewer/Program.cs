@@ -1,5 +1,4 @@
 ﻿using Projectx.Entity.Models;
-using System.Net;
 using System.Net.Http.Json;
 
 namespace Viewer;
@@ -15,6 +14,7 @@ internal class Program
 
     private async static Task ViewHistory()
     {
+        Console.WriteLine("Last 10 minutes history:\n");
         using (var client = new HttpClient())
         {
             var responseMessages = await client.GetFromJsonAsync<IEnumerable<Message>>(APP_PATH + "/api/Message/LastHistory");
