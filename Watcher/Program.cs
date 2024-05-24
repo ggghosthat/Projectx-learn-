@@ -22,7 +22,7 @@ internal class Program
             int recv = _watchSocket.ReceiveFrom(data, ref _watchEndpoint);
 
             string message = Encoding.ASCII.GetString(data, 0, recv);
-            Console.WriteLine(message);
+            Console.WriteLine(message + Environment.NewLine);
         }
     }
 }

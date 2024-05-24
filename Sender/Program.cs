@@ -30,7 +30,7 @@ internal class Program
         using (var client = new HttpClient())
         {
             var response = await client.PostAsJsonAsync(APP_PATH + "/api/Gate/RegisterUser", registerModel);
-            var json = await response.Content.ReadAsStringAsync();
+            string json = await response.Content.ReadAsStringAsync();
             clientId = JsonSerializer.Deserialize<int>(json);
         }
 
