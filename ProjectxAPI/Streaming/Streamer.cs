@@ -30,10 +30,18 @@ public class Streamer : IStreamer, IDisposable
 
     public async Task Stream(Message message)
     {
+        byte[] sendBytes = NewMethod(message);
+
+        var remoteEP = new IPEndPoint(IPAddress.Broadcast, 9050);
+        _streamSocket.EnableBroadcast = true;
+        await _streamSocket.SendToAsync(sendBytes, remoteEP);
+    }
+
+    private static byte[] NewMethod(Message message)
+    {
         string text = JsonSerializer.Serialize(message);
         byte[] sendBytes = Encoding.ASCII.GetBytes(text);
-        var remoteEP = new IPEndPoint(IPAddress.Any, 0);
-        await _streamSocket.SendToAsync(sendBytes, remoteEP);
+        return sendBytes;
     }
 
     public void Dispose()

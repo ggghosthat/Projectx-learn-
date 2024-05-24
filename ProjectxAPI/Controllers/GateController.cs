@@ -35,6 +35,6 @@ public class GateController : ControllerBase
 
         _loggerManager.LogInfo($"Client '{client.Name}' registered.");
         
-        return Ok(client);
+        return Ok(client.ClientId);
     }
 }

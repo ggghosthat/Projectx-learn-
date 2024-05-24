@@ -28,32 +28,46 @@ public class MessageController : ControllerBase
     [HttpPost("SendMessage")]
     public async Task<IActionResult> Send([FromBody] MessageDto messageDto)
     {
-        var message = new Message
+        try
         {
-            MessageId = Guid.NewGuid(),
-            ClientId = messageDto.ClientId,
-            Created = DateTime.Now,
-            Content = messageDto.Content
-        };
+            var message = new Message
+            {
+                MessageId = Guid.NewGuid(),
+                ClientId = messageDto.ClientId,
+                Created = DateTime.Now,
+                Content = messageDto.Content
+            };
 
-        await _repositoryManager.Messages.Create(message);
-        _loggerManager.LogInfo($"Message {message.MessageId} recieved.");
+            await _repositoryManager.Messages.Create(message);
+            _loggerManager.LogInfo($"Message {message.MessageId} recieved.");
 
-        await _streamer.Stream(message);
-        _loggerManager.LogInfo($"Message {message.MessageId} streamed.");
+            await _streamer.Stream(message);
+            _loggerManager.LogInfo($"Message {message.MessageId} streamed.");
 
-        return Ok(message);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     [HttpGet("LastHistory")]
     public async Task<IActionResult> GetLastHistory()
     {
-        DateTime startTime = DateTime.Now.AddMinutes(-10);
-        DateTime endTime = DateTime.Now;
+        try 
+        { 
+            DateTime startTime = DateTime.Now.AddMinutes(-10);
+            DateTime endTime = DateTime.Now;
 
-        var result = await _repositoryManager.Messages.GetByTimeframe(startTime, endTime);
-        _loggerManager.LogInfo($"Requested history for last 10 minutes.");
+            var result = await _repositoryManager.Messages.GetByTimeframe(startTime, endTime);
+            _loggerManager.LogInfo($"Requested history for last 10 minutes.");
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 }
