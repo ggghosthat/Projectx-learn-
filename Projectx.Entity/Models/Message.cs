@@ -15,4 +15,7 @@ public class Message
     [Required(ErrorMessage = "Message content is a required field.")]
     [MaxLength(128, ErrorMessage = "Max length for the message content is 128 characters.")]
     public string Content { get; set; }
+
+    public override string ToString() =>
+        $"Message id: {MessageId}\nClient id: {ClientId}\nCreated: {Created}\n Content{Content}\n";
 }
