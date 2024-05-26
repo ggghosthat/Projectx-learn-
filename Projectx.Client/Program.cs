@@ -6,8 +6,6 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
-        Task.Run(() => Watcher.Watch());
-
         while (true)
         {
             int inputCommand = DefineInputCommand();
@@ -15,6 +13,7 @@ internal class Program
             if (inputCommand == 4)
                 break;
 
+            MethodHelper.AppPath = Environment.GetEnvironmentVariable("PROJECTX_APP_PATH");
             switch (inputCommand)
             {
                 case 1:
@@ -22,9 +21,6 @@ internal class Program
                     break;
                 case 2:
                     await ViewHistory();
-                    break;
-                case 3:
-                    await WatchMessages();
                     break;
             }
         }
@@ -35,8 +31,7 @@ internal class Program
         string commandListBanner =
             @"Please, select command:
                 1) send - send your message
-                2) view - view last 10 minutes history
-                3) watch - watch new incoming messages";
+                2) view - view last 10 minutes history";
 
         Console.Clear();
         Console.WriteLine(commandListBanner);
@@ -45,7 +40,7 @@ internal class Program
         if (int.TryParse(inputLine, out int result) && result >= 1 && result <= 3)
             return result;
         else
-            return 0;
+            return 4;
     }
 
     private async static Task Send()
@@ -60,17 +55,6 @@ internal class Program
     {
         Console.Clear();
         await MethodHelper.ViewHistory();
-        Console.ReadKey();
-    }
-
-    private async static Task WatchMessages()
-    {
-        Console.Clear();
-        while (true)
-        {
-            foreach(var message in Watcher.Messages)
-                Console.WriteLine(message);
-        }
         Console.ReadKey();
     }
 }
