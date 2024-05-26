@@ -12,6 +12,7 @@ services:
     networks:
       - 'projectx-net'
   app:
+    image: ggghosthat/projectx_app
     build:
       context: ./ProjectxAPI
       dockerfile: Dockerfile
@@ -22,15 +23,8 @@ services:
       - "9050:9050/udp"
     networks:
       - "projectx-net"
-  client:
-    build:
-      context: ./utilities
-      dockerfile: Dockerfile
-    environment:
-      - PROJECTX_APP_PATH=http://projectx_app_1:5000
-    networks:
-      - "projectx-net"
   proxy:
+    image: ggghosthat/nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -38,6 +32,16 @@ services:
       - "80:80"
     links: 
       - app
+    networks:
+      - "projectx-net"
+  client:
+    image: ggghosthat/projectx_client
+    entrypoint: ["tail", "-F", "anything"]
+    build:
+      context: ./utilities
+      dockerfile: Dockerfile
+    environment:
+      - PROJECTX_APP_PATH=http://projectx_app_1:5000
     networks:
       - "projectx-net"
 

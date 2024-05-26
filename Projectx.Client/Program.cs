@@ -31,8 +31,7 @@ internal class Program
 
     private static int DefineInputCommand()
     {
-        string commandListBanner =
-            @"Please, select command:\n\t1) send - send your message\n\t2) view - view last 10 minutes history";
+        string commandListBanner ="Please, select command:\n\t1) send - send your message\n\t2) view - view last 10 minutes history";
 
         Console.Clear();
         Console.WriteLine(commandListBanner);
