@@ -14,6 +14,9 @@ internal class Program
                 break;
 
             MethodHelper.AppPath = Environment.GetEnvironmentVariable("PROJECTX_APP_PATH");
+            
+            Console.WriteLine($"app path: {MethodHelper.AppPath}");
+
             switch (inputCommand)
             {
                 case 1:
@@ -29,9 +32,7 @@ internal class Program
     private static int DefineInputCommand()
     {
         string commandListBanner =
-            @"Please, select command:
-                1) send - send your message
-                2) view - view last 10 minutes history";
+            @"Please, select command:\n\t1) send - send your message\n\t2) view - view last 10 minutes history";
 
         Console.Clear();
         Console.WriteLine(commandListBanner);

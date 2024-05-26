@@ -1,0 +1,46 @@
+version: '2'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+    volumes:
+      - ./volumes/data/db:/var/lib/postgresql/data
+    ports:
+       - "5432:5432"
+    networks:
+      - 'projectx-net'
+  app:
+    build:
+      context: ./ProjectxAPI
+      dockerfile: Dockerfile
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+      - "9050:9050/udp"
+    networks:
+      - "projectx-net"
+  client:
+    build:
+      context: ./utilities
+      dockerfile: Dockerfile
+    environment:
+      - PROJECTX_APP_PATH=http://projectx_app_1:5000
+    networks:
+      - "projectx-net"
+  proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports: 
+      - "80:80"
+    links: 
+      - app
+    networks:
+      - "projectx-net"
+
+networks:
+  projectx-net:
+    driver: bridge 

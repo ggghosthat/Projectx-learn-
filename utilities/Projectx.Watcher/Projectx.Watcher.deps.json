@@ -1,0 +1,37 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0/linux-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/linux-x64": {
+      "Projectx.Watcher/1.0.0": {
+        "dependencies": {
+          "Projectx.Entity": "1.0.0"
+        },
+        "runtime": {
+          "Projectx.Watcher.dll": {}
+        }
+      },
+      "Projectx.Entity/1.0.0": {
+        "runtime": {
+          "Projectx.Entity.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Projectx.Watcher/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Projectx.Entity/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
