@@ -1,7 +1,7 @@
 version: '2'
 services:
   postgres:
-    image: postgres
+    image: ggghosthat/postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
